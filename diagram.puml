@@ -1,0 +1,60 @@
+@startuml
+title HelloBot Architecture with Tracking Layers
+
+package "Salesforce Platform" {
+  
+  class Flow {
+    +start()
+    +getUserInput()
+  }
+  
+  class BotController {
+    +processBot()
+  }
+  
+  class BotFactory {
+    +getStrategy()
+  }
+  
+  interface BotStrategy {
+    +handle()
+  }
+  
+  class TrackingStrategy {
+    +handle()
+  }
+  
+  class TrackingService {
+    +getOrderById()
+  }
+  
+  class TrackingRepository {
+    +getOrderById()
+    +saveTrackingLog()
+  }
+  
+  class SupportStrategy
+  class ReturnPolicyStrategy
+  class ServiceContractStrategy
+  
+  class InteractionLog__c {
+    +Action__c
+    +Status__c
+    +Payload__c
+    +Timestamp__c
+  }
+
+  /' relationships '/
+  Flow --> BotController : invokes
+  BotController --> BotFactory : getStrategy
+  BotFactory --> BotStrategy
+  BotStrategy <|.. TrackingStrategy
+  BotStrategy <|.. SupportStrategy
+  BotStrategy <|.. ReturnPolicyStrategy
+  BotStrategy <|.. ServiceContractStrategy
+  TrackingStrategy --> TrackingService : delegates
+  TrackingService --> TrackingRepository : persists
+  TrackingRepository --> InteractionLog__c : inserts
+}
+
+@enduml
