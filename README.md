@@ -1,4 +1,4 @@
-# HelloBot Architecture (Salesforce Apex + Flow)
+# HelloBot (Salesforce Apex + Flow)
 
 This project implements a chatbot orchestration pattern using Salesforce Flow and Apex, with the Strategy design pattern to manage multiple conversation types.
 
