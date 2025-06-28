@@ -62,6 +62,19 @@ Custom object to store:
 
 ---
 
+## Shared Scratch Org
+
+For testing and collaboration, a shared scratch org has been provisioned with minimal test data:
+
+- **Developer Edition Username**: `josivan224@agentforce.com`  
+- **Password**: `@Portoalegre30`
+
+This org contains a clean environment with basic data, making it easier to run tests and validate functionality with a common baseline.
+
+> ⚠️ **Important**: Credentials above are for development/testing purposes only.
+
+---
+
 ## Deployment
 
 You can deploy using Salesforce DX:
