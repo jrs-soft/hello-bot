@@ -1,18 +1,70 @@
-# Salesforce DX Project: Next Steps
+# HelloBot Architecture (Salesforce Apex + Flow)
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+This project implements a chatbot orchestration pattern using Salesforce Flow and Apex, with the Strategy design pattern to manage multiple conversation types.
 
-## How Do You Plan to Deploy Your Changes?
+## Architecture Overview
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+![Architecture Diagram](./diagram.svg)
 
-## Configure Your Salesforce DX Project
+### ✅ Flow
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+- User-friendly welcome screen
+- Offers choices (tracking, support, etc.)
+- Passes user inputs to an Apex Action with parameters
 
-## Read All About It
+### ✅ BotController
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+- Single point of entry for Apex logic
+- Receives the action and payload from the Flow
+- Delegates to the BotFactory to decide the strategy
+
+### ✅ BotFactory
+
+- Contains the routing logic to select the correct strategy
+- Returns the appropriate `BotStrategy` implementation
+
+### ✅ Bot Strategies (Strategy Pattern)
+
+- `TrackingStrategy`
+- `SupportStrategy`
+- `ReturnPolicyStrategy`
+- `ServiceContractStrategy`
+  
+Each strategy implements the common `BotStrategy` interface.
+
+- Strategies **should** be simple, delegating business rules to a *Service* layer.
+
+### ✅ Service Layer
+
+For example:
+- `TrackingService` processes the business logic for tracking orders
+- The Service delegates to a Repository for persistence
+
+### ✅ Repository Layer
+
+For example:
+- `TrackingRepository` handles actual database writes
+- It can directly call DML to persist to Salesforce objects
+
+### ✅ InteractionLogger
+
+- A helper component to centralize logging of interactions
+- Saves records into the `InteractionLog__c` object
+
+### ✅ InteractionLog__c
+
+Custom object to store:
+- Action
+- Payload
+- Status
+- Timestamp
+- User
+
+---
+
+## Deployment
+
+You can deploy using Salesforce DX:
+
+```bash
+sf project deploy start --source-dir force-app
