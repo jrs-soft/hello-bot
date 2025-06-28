@@ -1,20 +1,23 @@
 public class TrackingStrategy implements BotStrategy {
     
+    private TrackingService service = new TrackingService();
+    
     public void handle(BotController.BotRequest req) {
         // parse JSON
         Map<String, Object> payload = (Map<String, Object>) JSON.deserializeUntyped(req.payloadJson);
         
         String orderId = (String) payload.get('orderId');
-        String status  = (String) payload.get('orderStatus');
-        String deliveryDate = (String) payload.get('deliveryDate');
+        
+        // delega para a camada de serviço
+        TrackingResult result = service.trackOrder(orderId, req.userId);
         
         InteractionLogger.log(
             req.userId,
             req.action,
-            req.payloadJson,
-            'Processed: ' + status
+            JSON.serialize(payload),
+            'Processed: ' + result.status
         );
         
-        System.debug('Rastreamento do pedido ' + orderId + ' com status ' + status + ' e entrega em ' + deliveryDate);
+        System.debug('Pedido ' + orderId + ' status: ' + result.status + ', entrega prevista: ' + result.deliveryDate);
     }
 }

@@ -1,0 +1,204 @@
+{
+    "fileVersion": 0,
+    "serverMaxRevisionCounter": 53,
+    "sourceMembers": {
+        "CustomField__InteractionLog__c.Action__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 1,
+            "lastRetrievedFromServer": 1,
+            "isNameObsolete": false
+        },
+        "CustomField__InteractionLog__c.Payload__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 2,
+            "lastRetrievedFromServer": 2,
+            "isNameObsolete": false
+        },
+        "CustomField__InteractionLog__c.Status__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 3,
+            "lastRetrievedFromServer": 3,
+            "isNameObsolete": false
+        },
+        "CustomField__InteractionLog__c.Timestamp__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 4,
+            "lastRetrievedFromServer": 4,
+            "isNameObsolete": false
+        },
+        "CustomField__InteractionLog__c.User__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 5,
+            "lastRetrievedFromServer": 5,
+            "isNameObsolete": false
+        },
+        "CustomField__OrderTracking__c.DeliveryDate__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 6,
+            "lastRetrievedFromServer": 6,
+            "isNameObsolete": false
+        },
+        "CustomField__OrderTracking__c.OrderId__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 7,
+            "lastRetrievedFromServer": 7,
+            "isNameObsolete": false
+        },
+        "CustomField__OrderTracking__c.Status__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 8,
+            "lastRetrievedFromServer": 8,
+            "isNameObsolete": false
+        },
+        "CustomField__OrderTracking__c.UserId__c": {
+            "memberType": "CustomField",
+            "serverRevisionCounter": 9,
+            "lastRetrievedFromServer": 9,
+            "isNameObsolete": false
+        },
+        "CustomObject__InteractionLog__c": {
+            "memberType": "CustomObject",
+            "serverRevisionCounter": 10,
+            "lastRetrievedFromServer": 10,
+            "isNameObsolete": false
+        },
+        "CustomObject__OrderTracking__c": {
+            "memberType": "CustomObject",
+            "serverRevisionCounter": 11,
+            "lastRetrievedFromServer": 11,
+            "isNameObsolete": false
+        },
+        "Profile__Admin": {
+            "memberType": "Profile",
+            "serverRevisionCounter": 32,
+            "lastRetrievedFromServer": null,
+            "isNameObsolete": false
+        },
+        "ApexClass__BotController": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 33,
+            "lastRetrievedFromServer": 33,
+            "isNameObsolete": false
+        },
+        "ApexClass__BotFactory": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 34,
+            "lastRetrievedFromServer": 34,
+            "isNameObsolete": false
+        },
+        "ApexClass__BotStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 35,
+            "lastRetrievedFromServer": 35,
+            "isNameObsolete": false
+        },
+        "ApexClass__DefaultStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 36,
+            "lastRetrievedFromServer": 36,
+            "isNameObsolete": false
+        },
+        "ApexClass__InteractionLogger": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 37,
+            "lastRetrievedFromServer": 37,
+            "isNameObsolete": false
+        },
+        "ApexClass__LogisticsApiMock": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 38,
+            "lastRetrievedFromServer": 38,
+            "isNameObsolete": false
+        },
+        "ApexClass__ReturnPolicyStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 39,
+            "lastRetrievedFromServer": 39,
+            "isNameObsolete": false
+        },
+        "ApexClass__ReturnPolicyStrategyTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 40,
+            "lastRetrievedFromServer": 40,
+            "isNameObsolete": false
+        },
+        "ApexClass__ServiceContractStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 41,
+            "lastRetrievedFromServer": 41,
+            "isNameObsolete": false
+        },
+        "ApexClass__ServiceContractStrategyTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 42,
+            "lastRetrievedFromServer": 42,
+            "isNameObsolete": false
+        },
+        "ApexClass__SupportStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 43,
+            "lastRetrievedFromServer": 43,
+            "isNameObsolete": false
+        },
+        "ApexClass__SupportStrategyTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 44,
+            "lastRetrievedFromServer": 44,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingApiMock": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 45,
+            "lastRetrievedFromServer": 45,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingApiMockError": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 46,
+            "lastRetrievedFromServer": 46,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingRepository": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 47,
+            "lastRetrievedFromServer": 47,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingRepositoryTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 48,
+            "lastRetrievedFromServer": 48,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingResult": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 49,
+            "lastRetrievedFromServer": 49,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingService": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 50,
+            "lastRetrievedFromServer": 50,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingServiceTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 51,
+            "lastRetrievedFromServer": 51,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingStrategy": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 52,
+            "lastRetrievedFromServer": 52,
+            "isNameObsolete": false
+        },
+        "ApexClass__TrackingStrategyTest": {
+            "memberType": "ApexClass",
+            "serverRevisionCounter": 53,
+            "lastRetrievedFromServer": 53,
+            "isNameObsolete": false
+        }
+    }
+}
