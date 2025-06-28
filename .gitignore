@@ -34,3 +34,6 @@ nyc_output/
 .apex.db
 .apex/
 .apexlogs/
+
+# ignora todos os source tracking de scratch orgs
+.sf/orgs/
