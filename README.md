@@ -68,3 +68,40 @@ You can deploy using Salesforce DX:
 
 ```bash
 sf project deploy start --source-dir force-app
+
+## Future Improvements
+
+Here are ideas for enhancing this architecture in future iterations:
+
+### 1️⃣ Logging / Auditing
+
+- Enrich the current `InteractionLogger` to include:
+  - response time
+  - flow execution context
+  - error stack traces (if any)
+  - conversation session ID  
+- This will provide more complete traceability for debugging and compliance.
+
+---
+
+### 2️⃣ Externalizing Messages
+
+- Move static strings, such as debug logs and user messages, to Salesforce **Custom Labels**.
+- This allows easy translation or message changes without modifying Apex code.
+
+---
+
+### 3️⃣ Extensible Strategy Mapping
+
+- Today the `BotFactory` hardcodes the mapping of actions to strategies.
+- In future, consider leveraging **Custom Metadata Types** to map `action → Apex class name` dynamically.
+- This will make the bot more configurable without code changes.
+
+---
+
+### 4️⃣ External Logging Integrations
+
+- Integrate with Salesforce **Platform Events**, or external tools like ELK / Splunk, to send conversation data in real time.
+- This improves monitoring and facilitates analytics beyond the Salesforce UI.
+
+---
