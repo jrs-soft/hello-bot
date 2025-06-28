@@ -69,6 +69,8 @@ You can deploy using Salesforce DX:
 ```bash
 sf project deploy start --source-dir force-app
 
+---
+
 ## Future Improvements
 
 Here are ideas for enhancing this architecture in future iterations:
