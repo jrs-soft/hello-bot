@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MessagingSession__c</fullName>
+    <label>Messaging Session</label>
+    <type>Lookup</type>
+    <referenceTo>MessagingSession</referenceTo>
+    <relationshipLabel>Related Session</relationshipLabel>
+    <relationshipName>Related_Session</relationshipName>
+    <required>false</required>
+</CustomField>

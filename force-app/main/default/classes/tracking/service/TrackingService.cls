@@ -27,5 +27,4 @@ public class TrackingService {
         return new TrackingResult(status, deliveryDate);
     }
     
-    public class TrackingException extends Exception {}
 }

@@ -39,7 +39,7 @@ public class TrackingServiceTest {
         try {
             service.trackOrder(fakeOrderId, fakeUserId);
             System.assert(false, 'Deveria ter lançado TrackingException');
-        } catch (TrackingService.TrackingException ex) {
+        } catch (TrackingException ex) {
             System.assert(ex.getMessage().contains('Erro ao consultar pedido'));
         }
     }
