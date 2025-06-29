@@ -11,10 +11,13 @@ public with sharing class BotController {
         public String contactId;
         
         @InvocableVariable
-        public String serviceName; // opcional
+        public String serviceName;
         
         @InvocableVariable
-        public String orderId; // <<< NOVO campo
+        public String orderId;
+
+        @InvocableVariable
+        public String description;
     }
     
     @InvocableMethod(label='Process Bot Action')
@@ -33,6 +36,10 @@ public with sharing class BotController {
             
             if (!String.isBlank(req.orderId)) {
                 parameters.put('orderId', req.orderId);
+            }
+
+            if (!String.isBlank(req.description)) {
+                parameters.put('description', req.description);
             }
             
             BotRequestGlobal requestGlobal = new BotRequestGlobal();

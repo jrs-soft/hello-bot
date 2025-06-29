@@ -9,8 +9,11 @@ public class BotRequest {
     public String contactId;
     
     @InvocableVariable
-    public String serviceName; // opcional
+    public String serviceName;
     
     @InvocableVariable
-    public String orderId; // << NOVO
+    public String orderId;
+
+    @InvocableVariable
+    public String description;
 }
