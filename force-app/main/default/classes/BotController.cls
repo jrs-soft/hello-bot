@@ -12,10 +12,15 @@ public with sharing class BotController {
         
         @InvocableVariable
         public String serviceName; // opcional
+        
+        @InvocableVariable
+        public String orderId; // <<< NOVO campo
     }
     
     @InvocableMethod(label='Process Bot Action')
-    public static void processBot(List<BotRequest> requests) {
+    public static List<BotResponseWrapper> processBot(List<BotRequest> requests) {
+        List<BotResponseWrapper> results = new List<BotResponseWrapper>();
+        
         for (BotRequest req : requests) {
             BotStrategy strategy = BotFactory.getStrategy(req.action);
             
@@ -26,13 +31,20 @@ public with sharing class BotController {
                 parameters.put('serviceName', req.serviceName);
             }
             
+            if (!String.isBlank(req.orderId)) {
+                parameters.put('orderId', req.orderId);
+            }
+            
             BotRequestGlobal requestGlobal = new BotRequestGlobal();
             requestGlobal.parameters = parameters;
             requestGlobal.sessionId = req.sessionId;
             requestGlobal.contactId = req.contactId;
             
             BotResponse response = strategy.handle(requestGlobal);
-            System.debug('## Bot response: ' + response.message);
+            
+            results.add(new BotResponseWrapper(response.message));
         }
+        
+        return results;
     }
 }
