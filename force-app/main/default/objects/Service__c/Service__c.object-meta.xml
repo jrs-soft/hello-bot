@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Service</label>
+    <pluralLabel>Services</pluralLabel>
+    <nameField>
+        <label>Service Name</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <fields>
+        <fullName>BasePrice__c</fullName>
+        <label>Base Price</label>
+        <type>Currency</type>
+        <precision>18</precision>
+        <scale>2</scale>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <label>Description</label>
+        <type>LongTextArea</type>
+        <length>32768</length>
+        <visibleLines>3</visibleLines>
+    </fields>
+</CustomObject>
