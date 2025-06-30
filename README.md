@@ -62,6 +62,21 @@ Custom object to store:
 
 ---
 
+## Flow Path in This Repository
+
+The Salesforce Flow metadata for this project is located at:
+```
+force-app/main/default/flows/Bot_Entry_Flow.flow-meta.xml
+```
+
+---
+
+## Test Coverage
+
+This project has an Apex test coverage of approximately **90%**, ensuring a high level of reliability and maintainability.
+
+---
+
 ## Setting Up Your Scratch Org
 
 ⚠️ **Important:** Salesforce Scratch Orgs are temporary, personal, and non-shareable environments. Each developer must create their *own* Scratch Org to work with this project. Scratch Orgs cannot be reused across users.
