@@ -15,13 +15,17 @@ public with sharing class BotController {
         
         @InvocableVariable
         public String orderId;
-
+        
         @InvocableVariable
         public String description;
+        
+        @InvocableVariable
+        public String issueType;
     }
     
     @InvocableMethod(label='Process Bot Action')
     public static List<BotResponseWrapper> processBot(List<BotRequest> requests) {
+        
         List<BotResponseWrapper> results = new List<BotResponseWrapper>();
         
         for (BotRequest req : requests) {
@@ -37,9 +41,13 @@ public with sharing class BotController {
             if (!String.isBlank(req.orderId)) {
                 parameters.put('orderId', req.orderId);
             }
-
+            
             if (!String.isBlank(req.description)) {
                 parameters.put('description', req.description);
+            }
+            
+            if (!String.isBlank(req.issueType)) {
+                parameters.put('issueType', req.issueType);
             }
             
             BotRequestGlobal requestGlobal = new BotRequestGlobal();

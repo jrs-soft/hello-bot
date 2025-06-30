@@ -13,7 +13,10 @@ public class BotRequest {
     
     @InvocableVariable
     public String orderId;
-
+    
     @InvocableVariable
     public String description;
+    
+    @InvocableVariable
+    public String issueType;
 }
