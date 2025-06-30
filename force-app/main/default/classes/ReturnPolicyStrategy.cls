@@ -5,6 +5,7 @@ public with sharing class ReturnPolicyStrategy implements BotStrategy {
         String orderId = (String) req.parameters.get('orderId');
         String reason = (String) req.parameters.get('reason');
         Boolean startReturn = (Boolean) req.parameters.get('startReturn');
+        
         if (startReturn == null) {
             startReturn = false;
         }

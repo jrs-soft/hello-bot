@@ -19,4 +19,8 @@ public class BotRequest {
     
     @InvocableVariable
     public String issueType;
+    
+    @InvocableVariable
+    public String reason;
+   
 }

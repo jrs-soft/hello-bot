@@ -12,19 +12,19 @@ public class ReturnPolicyService {
         try {
             Case c = new Case(
                 Subject = 'Devolução - ' + orderId,
-            Description = reason,
-            Status = 'New',
-            Origin = 'Chatbot'
+                Description = reason,
+                Status = 'New',
+                Origin = 'Chatbot'
                 );
             insert c;
             System.debug('CASE inserido: ' + c.Id);
             
             ReturnRequest__c r = new ReturnRequest__c(
                 OrderId__c = orderId,
-            Reason__c = reason,
-            Status__c = 'Iniciado',
-            UserId__c = userId,
-            Case__c = c.Id
+                Reason__c = reason,
+                Status__c = 'Iniciado',
+                UserId__c = userId,
+                Case__c = c.Id
                 );
             insert r;
             System.debug('RETURNREQUEST inserido: ' + r.Id);

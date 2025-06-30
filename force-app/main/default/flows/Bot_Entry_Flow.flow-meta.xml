@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>CallBotControllerReturnPolicy</name>
+        <label>CallBotControllerReturnPolicy</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>BotController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>ShowReturnConfirmation</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>action</name>
+            <value>
+                <stringValue>Política de Devolução</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>contactId</name>
+            <value>
+                <elementReference>contactId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>orderId</name>
+            <value>
+                <elementReference>orderIdReturnPolicyInput</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>reason</name>
+            <value>
+                <elementReference>reasonInput</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sessionId</name>
+            <value>
+                <stringValue>123456</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>BotController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>returnPolicyConfirmationMessage</assignToReference>
+            <name>responseMessage</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>CallBotControllerSupport</name>
         <label>CallBotControllerSupport</label>
         <locationX>0</locationX>
@@ -93,6 +141,14 @@
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <choices>
+        <name>returnPolicy</name>
+        <choiceText>Política de Devolução</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Política de Devolução</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>support</name>
         <choiceText>Suporte Técnico</choiceText>
         <dataType>String</dataType>
@@ -149,6 +205,21 @@
                 <targetReference>DescribeProblemScreen</targetReference>
             </connector>
             <label>Suporte Técnico</label>
+        </rules>
+        <rules>
+            <name>Politica_de_Devolucao</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>actionChoice</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Política de Devolução</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DescribeReturnReasonScreen</targetReference>
+            </connector>
+            <label>Política de Devolução</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -249,6 +320,76 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>DescribeReturnReasonScreen</name>
+        <label>DescribeReturnReasonScreen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>CallBotControllerReturnPolicy</targetReference>
+        </connector>
+        <fields>
+            <name>orderIdReturnPolicyInput</name>
+            <dataType>String</dataType>
+            <fieldText>Informe o número da ordem de serviço?</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>reasonInput</name>
+            <dataType>String</dataType>
+            <fieldText>Por qual motivo deseja devolver o produto?</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>ShowReturnConfirmation</name>
+        <label>ShowReturnConfirmation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>ShowReturnPolicyConfirmation</name>
+            <fieldText>&lt;p&gt;{!returnPolicyConfirmationMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>showSupport</name>
         <label>showSupport</label>
         <locationX>0</locationX>
@@ -311,6 +452,7 @@
             <name>actionChoice</name>
             <choiceReferences>trackOrder</choiceReferences>
             <choiceReferences>support</choiceReferences>
+            <choiceReferences>returnPolicy</choiceReferences>
             <dataType>String</dataType>
             <fieldText>O que deseja fazer?</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -370,6 +512,13 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>returnPolicyConfirmationMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>supportConfirmationMessage</name>

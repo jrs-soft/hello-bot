@@ -17,10 +17,11 @@ public with sharing class BotController {
         public String orderId;
         
         @InvocableVariable
-        public String description;
+        public String reason;
         
         @InvocableVariable
         public String issueType;
+        
     }
     
     @InvocableMethod(label='Process Bot Action')
@@ -42,8 +43,8 @@ public with sharing class BotController {
                 parameters.put('orderId', req.orderId);
             }
             
-            if (!String.isBlank(req.description)) {
-                parameters.put('description', req.description);
+            if (!String.isBlank(req.reason)) {
+                parameters.put('reason', req.reason);
             }
             
             if (!String.isBlank(req.issueType)) {
