@@ -7,7 +7,7 @@ public with sharing class ServiceContractStrategy implements BotStrategy {
         }
         
         try {
-
+            
             System.debug('>>> contactId: ' + request.contactId);
             System.debug('>>> requestedService: ' + requestedService);
             
@@ -16,15 +16,15 @@ public with sharing class ServiceContractStrategy implements BotStrategy {
             // log
             InteractionLogger.log(
                 request.contactId,
-                'ServiceContract',
-                JSON.serialize(request.parameters),
-                'OK'
-            );
+            'ServiceContract',
+            JSON.serialize(request.parameters),
+            'OK'
+                );
             
             return new BotResponse(
-                'Orçamento gerado para o serviço ' + quote.Service__c + 
+                'Orçamento gerado para o serviço ' + requestedService +
                 ' no valor de R$' + quote.Price__c
-            );
+                );
         } catch(ServiceContractException ex) {
             return new BotResponse('Serviço não encontrado. Por favor verifique o nome.');
         }

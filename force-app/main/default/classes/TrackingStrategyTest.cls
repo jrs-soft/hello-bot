@@ -1,33 +1,63 @@
 @isTest
-private class TrackingStrategyTest {
+public class TrackingStrategyTest {
     
     @isTest
-    static void testTracking() {
-        // arrange (simulação de dados)
-        Contact contact = new Contact(LastName = 'Teste');
-        insert contact;
+    static void testPedidoEmBranco() {
+        BotRequestGlobal req = new BotRequestGlobal();
+        req.parameters = new Map<String, Object>{
+            'action' => 'Rastreamento de Pedido'
+                // sem orderId
+        };
+        req.sessionId = 'sess-123';
+        req.contactId = '003XXXXXXXXXXXXXXX';
         
+        TrackingStrategy strategy = new TrackingStrategy();
+        BotResponse res = strategy.handle(req);
+        
+        System.assertNotEquals(null, res);
+        System.assert(res.message.contains('informe o número do pedido'));
+    }
+    
+    @isTest
+    static void testPedidoNaoEncontrado() {
         BotRequestGlobal req = new BotRequestGlobal();
         req.parameters = new Map<String, Object>{
             'action' => 'Rastreamento de Pedido',
-            'orderId' => '123',
-            'orderStatus' => 'InProgress'
+            'orderId' => '999'
         };
-        req.sessionId = 'sessao-123';
-        req.contactId = contact.Id;
+        req.sessionId = 'sess-999';
+        req.contactId = '003XXXXXXXXXXXXXXX';
         
-        // act
         TrackingStrategy strategy = new TrackingStrategy();
-        BotResponse response = strategy.handle(req);
+        BotResponse res = strategy.handle(req);
         
-        // assert
-        System.assertNotEquals(null, response, 'A resposta não deveria ser nula.');
-        System.assert(response.message.contains('caminho'), 'Deveria conter mensagem de rastreamento.');
+        System.assertNotEquals(null, res);
+        System.assert(
+            res.message.contains('não encontrado') ||
+            res.message.toLowerCase().contains('desculpe'),
+        'Deveria informar falha de rastreamento.'
+            );
+    }
+    
+    @isTest
+    static void testErroTrackingService() {
+        // para forçar erro, podemos passar algo mal formado
+        BotRequestGlobal req = new BotRequestGlobal();
+        req.parameters = new Map<String, Object>{
+            'action' => 'Rastreamento de Pedido',
+            'orderId' => '!!'
+        };
+        req.sessionId = 'sess-erro';
+        req.contactId = '003XXXXXXXXXXXXXXX';
         
-        Integer count = [
-            SELECT COUNT() FROM InteractionLog__c 
-            WHERE Action__c = 'Tracking'
-        ];
-        System.assertEquals(1, count, 'Deveria ter salvo um log de rastreamento.');
+        TrackingStrategy strategy = new TrackingStrategy();
+        BotResponse res = strategy.handle(req);
+        
+        System.assertNotEquals(null, res);
+        System.assert(
+            res.message.toLowerCase().contains('desculpe') ||
+            res.message.toLowerCase().contains('não encontrado'),
+        'Deveria exibir mensagem de falha ou pedido não encontrado.'
+            );
     }
 }

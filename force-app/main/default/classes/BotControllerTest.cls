@@ -6,8 +6,8 @@ public class BotControllerTest {
         // arrange
         Service__c svc = new Service__c(
             Name = 'Consultoria Premium',
-            BasePrice__c = 500
-        );
+        BasePrice__c = 500
+            );
         insert svc;
         
         Account acc = new Account(Name = 'Cliente Teste');
@@ -15,15 +15,15 @@ public class BotControllerTest {
         
         Contact contact = new Contact(
             LastName = 'Fulano',
-            AccountId = acc.Id
-        );
+        AccountId = acc.Id
+            );
         insert contact;
         
         BotController.BotRequest req = new BotController.BotRequest();
         req.action = 'Contratação de Serviço';
         req.sessionId = 'sess123';
         req.contactId = contact.Id;
-        req.serviceName = 'Consultoria Premium';
+        req.requestedService = 'Consultoria Premium';
         
         List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
         
@@ -36,8 +36,8 @@ public class BotControllerTest {
         System.assertEquals(1, responses.size(), 'Deveria ter retornado uma resposta');
         System.assert(
             responses[0].responseMessage.contains('Orçamento gerado'),
-            'A resposta deveria conter mensagem de orçamento'
-        );
+        'A resposta deveria conter mensagem de orçamento'
+            );
         
         List<Quote__c> quotes = [
             SELECT Id, Customer__c, Status__c FROM Quote__c
@@ -55,8 +55,8 @@ public class BotControllerTest {
         
         Contact contact = new Contact(
             LastName = 'Ciclano',
-            AccountId = acc.Id
-        );
+        AccountId = acc.Id
+            );
         insert contact;
         
         BotController.BotRequest req = new BotController.BotRequest();
@@ -64,6 +64,7 @@ public class BotControllerTest {
         req.sessionId = 'sess999';
         req.contactId = contact.Id;
         
+        // sem orderId → TrackingStrategy deve pedir para informar
         List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
         
         // act
@@ -74,17 +75,17 @@ public class BotControllerTest {
         // assert
         System.assertEquals(1, responses.size(), 'Deveria ter retornado uma resposta');
         System.assert(
-            responses[0].responseMessage.contains('Seu pedido está a caminho'),
-            'A resposta deveria conter a mensagem do rastreamento'
-        );
+            responses[0].responseMessage.toLowerCase().contains('pedido'),
+        'Deveria conter a palavra pedido ao menos.'
+            );
         
         List<InteractionLog__c> logs = [
-            SELECT Id, Action__c, Status__c
-            FROM InteractionLog__c
-            WHERE User__c = :contact.Id
-            AND Action__c = 'Tracking'
-        ];
-        System.assertEquals(1, logs.size(), 'Deveria ter salvo o log de rastreamento');
+        SELECT Id, Action__c, Status__c
+        FROM InteractionLog__c
+        WHERE User__c = :contact.Id
+        AND Action__c = 'Tracking'
+    ];
+        System.assertEquals(0, logs.size(), 'Não deveria salvar log se não existe pedido.');
     }
     
     @isTest

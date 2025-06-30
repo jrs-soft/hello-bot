@@ -22,7 +22,7 @@ public class ServiceContractStrategyTest {
         BotRequestGlobal req = new BotRequestGlobal();
         req.parameters = new Map<String, Object>{
             'action' => 'Contratação de Serviço',
-            'serviceName' => 'Suporte Premium'
+            'requestedService' => 'Suporte Premium'
         };
         req.contactId = contact.Id;
         req.sessionId = 'sess123';
@@ -61,7 +61,7 @@ public class ServiceContractStrategyTest {
         BotRequestGlobal req = new BotRequestGlobal();
         req.parameters = new Map<String, Object>{
             'action' => 'Contratação de Serviço',
-            'serviceName' => 'Serviço Inexistente'
+            'requestedService' => 'Serviço Inexistente'
         };
         req.contactId = contact.Id;
         req.sessionId = 'sess456';
