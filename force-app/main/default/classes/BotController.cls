@@ -20,7 +20,13 @@ public with sharing class BotController {
         public String reason;
         
         @InvocableVariable
+        public String description;
+        
+        @InvocableVariable
         public String issueType;
+        
+        @InvocableVariable
+        public String requestedService;
         
     }
     
@@ -49,6 +55,10 @@ public with sharing class BotController {
             
             if (!String.isBlank(req.issueType)) {
                 parameters.put('issueType', req.issueType);
+            }
+            
+            if (!String.isBlank(req.requestedService)) {
+                parameters.put('requestedService', req.requestedService);
             }
             
             BotRequestGlobal requestGlobal = new BotRequestGlobal();

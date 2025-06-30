@@ -22,5 +22,8 @@ public class BotRequest {
     
     @InvocableVariable
     public String reason;
-   
+    
+    @InvocableVariable
+    public String requestedService;
+    
 }

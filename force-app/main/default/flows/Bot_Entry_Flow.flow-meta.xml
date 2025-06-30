@@ -3,8 +3,8 @@
     <actionCalls>
         <name>CallBotControllerReturnPolicy</name>
         <label>CallBotControllerReturnPolicy</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>536</locationX>
+        <locationY>506</locationY>
         <actionName>BotController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -49,10 +49,52 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>CallBotControllerServiceContract</name>
+        <label>CallBotControllerServiceContract</label>
+        <locationX>800</locationX>
+        <locationY>506</locationY>
+        <actionName>BotController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>ShowServiceContractConfirmation</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>action</name>
+            <value>
+                <stringValue>Contratação de Serviço</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>contactId</name>
+            <value>
+                <elementReference>contactId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>requestedService</name>
+            <value>
+                <elementReference>requestedServiceInput</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sessionId</name>
+            <value>
+                <stringValue>12345</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>BotController</nameSegment>
+        <offset>0</offset>
+        <outputParameters>
+            <assignToReference>serviceContractConfirmationMessage</assignToReference>
+            <name>responseMessage</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>CallBotControllerSupport</name>
         <label>CallBotControllerSupport</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>272</locationX>
+        <locationY>506</locationY>
         <actionName>BotController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -99,8 +141,8 @@
     <actionCalls>
         <name>CallBotControllerTrack</name>
         <label>CallBotControllerTrack</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>8</locationX>
+        <locationY>506</locationY>
         <actionName>BotController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -149,6 +191,14 @@
         </value>
     </choices>
     <choices>
+        <name>serviceContract</name>
+        <choiceText>Contratação de Serviço</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Contratação de Serviço</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>support</name>
         <choiceText>Suporte Técnico</choiceText>
         <dataType>String</dataType>
@@ -173,8 +223,8 @@
     <decisions>
         <name>DecideNextAction</name>
         <label>DecideNextAction</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>536</locationX>
+        <locationY>290</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Rastrear_Pedido</name>
@@ -221,6 +271,21 @@
             </connector>
             <label>Política de Devolução</label>
         </rules>
+        <rules>
+            <name>Contratacao_de_Servico</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>actionChoice</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Contratação de Serviço</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DescribeServiceScreen</targetReference>
+            </connector>
+            <label>Contratação de Serviço</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
     <interviewLabel>Bot_Entry_Flow {!$Flow.CurrentDateTime}</interviewLabel>
@@ -234,7 +299,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -247,8 +312,8 @@
     <screens>
         <name>AskOrderId</name>
         <label>AskOrderId</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>8</locationX>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -277,8 +342,8 @@
     <screens>
         <name>DescribeProblemScreen</name>
         <label>DescribeProblemScreen</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>272</locationX>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -322,8 +387,8 @@
     <screens>
         <name>DescribeReturnReasonScreen</name>
         <label>DescribeReturnReasonScreen</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>536</locationX>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -366,10 +431,40 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>DescribeServiceScreen</name>
+        <label>DescribeServiceScreen</label>
+        <locationX>800</locationX>
+        <locationY>398</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>CallBotControllerServiceContract</targetReference>
+        </connector>
+        <fields>
+            <name>requestedServiceInput</name>
+            <dataType>String</dataType>
+            <fieldText>Qual serviço você deseja contratar?</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>ShowReturnConfirmation</name>
         <label>ShowReturnConfirmation</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>536</locationX>
+        <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -390,10 +485,34 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>ShowServiceContractConfirmation</name>
+        <label>ShowServiceContractConfirmation</label>
+        <locationX>796</locationX>
+        <locationY>650</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>serviceContractConfirmationMessageLabel</name>
+            <fieldText>&lt;p&gt;{!serviceContractConfirmationMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>showSupport</name>
         <label>showSupport</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>272</locationX>
+        <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -416,8 +535,8 @@
     <screens>
         <name>ShowTracking</name>
         <label>ShowTracking</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>8</locationX>
+        <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -440,8 +559,8 @@
     <screens>
         <name>WelcomeScreen</name>
         <label>WelcomeScreen</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>536</locationX>
+        <locationY>182</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -453,6 +572,7 @@
             <choiceReferences>trackOrder</choiceReferences>
             <choiceReferences>support</choiceReferences>
             <choiceReferences>returnPolicy</choiceReferences>
+            <choiceReferences>serviceContract</choiceReferences>
             <dataType>String</dataType>
             <fieldText>O que deseja fazer?</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -471,8 +591,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
+        <locationX>410</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>WelcomeScreen</targetReference>
         </connector>
@@ -515,6 +635,13 @@
     </variables>
     <variables>
         <name>returnPolicyConfirmationMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>serviceContractConfirmationMessage</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

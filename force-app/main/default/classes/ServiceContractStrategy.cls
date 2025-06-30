@@ -1,6 +1,6 @@
 public with sharing class ServiceContractStrategy implements BotStrategy {
     public BotResponse handle(BotRequestGlobal request) {
-        String requestedService = (String) request.parameters.get('serviceName');
+        String requestedService = (String) request.parameters.get('requestedService');
         
         if (String.isBlank(requestedService)) {
             return new BotResponse('Por favor, informe qual serviço deseja contratar.');
