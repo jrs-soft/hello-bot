@@ -70,10 +70,10 @@ To set up your own Scratch Org, follow these steps:
 
 1. Clone this repository:
 
-   ```bash
-   git clone https://github.com/jrs-soft/hello-bot.git
-   cd hello-bot
-   ```
+```
+git clone https://github.com/jrs-soft/hello-bot.git
+cd hello-bot
+```
 
 2. Install the Salesforce CLI and authenticate with your Dev Hub:
 ```
