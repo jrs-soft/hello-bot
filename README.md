@@ -4,7 +4,7 @@ This project implements a chatbot orchestration pattern using Salesforce Flow an
 
 ## Architecture Overview
 
-![Architecture Diagram](./diagram.svg)
+![Architecture Diagram](./architecture.svg)
 
 ### ✅ Flow
 
