@@ -62,16 +62,40 @@ Custom object to store:
 
 ---
 
-## Shared Scratch Org
+## Scratch Org Sharing and Access
 
-For testing and collaboration, a shared scratch org has been provisioned with minimal test data:
+⚠️ **Important:** Salesforce Scratch Orgs are temporary, personal, and non-shareable environments. Each developer must create their *own* Scratch Org to work with this project. Scratch Orgs cannot be reused across users.
 
-- **Developer Edition Username**: `josivan224@agentforce.com`  
-- **Password**: `@Portoalegre30`
+To set up your own Scratch Org, follow these steps:
 
-This org contains a clean environment with basic data, making it easier to run tests and validate functionality with a common baseline.
+1. Clone this repository:
 
-> ⚠️ **Important**: Credentials above are for development/testing purposes only.
+   ```bash
+   git clone https://github.com/jrs-soft/hello-bot.git
+   cd hello-bot
+   ```
+
+2. Install the Salesforce CLI and authenticate with your Dev Hub:
+```
+sfdx force:auth:web:login -d -a DevHub
+```
+
+3. Create a new Scratch Org from the project definition file:
+```
+sfdx force:org:create -s -f config/project-scratch-def.json -a MyScratchOrg
+```
+
+4. Push the source code to the new Scratch Org:
+```
+sfdx force:source:push
+```
+
+5. Open the Scratch Org in your browser:
+```
+sfdx force:org:open
+```
+
+6. Each team member should repeat these steps individually to provision their own workspace.
 
 ---
 
