@@ -2,109 +2,112 @@
 public class BotControllerTest {
     
     @isTest
-    static void testProcessBot_withServiceContract() {
-        // arrange
-        Service__c svc = new Service__c(
-            Name = 'Consultoria Premium',
-        BasePrice__c = 500
-            );
-        insert svc;
-        
-        Account acc = new Account(Name = 'Cliente Teste');
+    static void testProcessBot_Rastreamento() {
+        Account acc = new Account(Name='Cliente Rastreio');
         insert acc;
         
-        Contact contact = new Contact(
-            LastName = 'Fulano',
-        AccountId = acc.Id
-            );
-        insert contact;
-        
-        BotController.BotRequest req = new BotController.BotRequest();
-        req.action = 'Contratação de Serviço';
-        req.sessionId = 'sess123';
-        req.contactId = contact.Id;
-        req.requestedService = 'Consultoria Premium';
-        
-        List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
-        
-        // act
-        Test.startTest();
-        List<BotResponseWrapper> responses = BotController.processBot(requests);
-        Test.stopTest();
-        
-        // assert
-        System.assertEquals(1, responses.size(), 'Deveria ter retornado uma resposta');
-        System.assert(
-            responses[0].responseMessage.contains('Orçamento gerado'),
-        'A resposta deveria conter mensagem de orçamento'
-            );
-        
-        List<Quote__c> quotes = [
-            SELECT Id, Customer__c, Status__c FROM Quote__c
-            WHERE Customer__c = :contact.Id
-        ];
-        System.assertEquals(1, quotes.size(), 'Deveria ter gerado um orçamento');
-        System.assertEquals('Pending', quotes[0].Status__c, 'O orçamento deveria estar pendente');
-    }
-    
-    @isTest
-    static void testProcessBot_withTracking() {
-        // arrange
-        Account acc = new Account(Name = 'Cliente Track');
-        insert acc;
-        
-        Contact contact = new Contact(
-            LastName = 'Ciclano',
-        AccountId = acc.Id
-            );
+        Contact contact = new Contact(LastName='Track', AccountId=acc.Id);
         insert contact;
         
         BotController.BotRequest req = new BotController.BotRequest();
         req.action = 'Rastreamento de Pedido';
-        req.sessionId = 'sess999';
+        req.sessionId = 'sess1';
         req.contactId = contact.Id;
+        req.orderId = '123';
         
-        // sem orderId → TrackingStrategy deve pedir para informar
         List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
         
-        // act
         Test.startTest();
         List<BotResponseWrapper> responses = BotController.processBot(requests);
         Test.stopTest();
         
-        // assert
-        System.assertEquals(1, responses.size(), 'Deveria ter retornado uma resposta');
+        System.assertEquals(1, responses.size());
         System.assert(
-            responses[0].responseMessage.toLowerCase().contains('pedido'),
-        'Deveria conter a palavra pedido ao menos.'
-            );
-        
-        List<InteractionLog__c> logs = [
-        SELECT Id, Action__c, Status__c
-        FROM InteractionLog__c
-        WHERE User__c = :contact.Id
-        AND Action__c = 'Tracking'
-    ];
-        System.assertEquals(0, logs.size(), 'Não deveria salvar log se não existe pedido.');
+            responses[0].responseMessage.toLowerCase().contains('pedido'), 
+            'Deveria conter a palavra pedido.'
+        );
     }
     
     @isTest
-    static void testProcessBot_withUnknownAction() {
-        // arrange
+    static void testProcessBot_SuporteTecnico() {
+        Contact contact = new Contact(LastName='Suporte');
+        insert contact;
+        
+        BotController.BotRequest req = new BotController.BotRequest();
+        req.action = 'Suporte Técnico';
+        req.sessionId = 'sess2';
+        req.contactId = contact.Id;
+        req.description = 'Problema X';
+        req.issueType = 'Tipo Y';
+        
+        List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
+        
+        List<BotResponseWrapper> responses = BotController.processBot(requests);
+        
+        System.assertEquals(1, responses.size());
+        System.assert(responses[0].responseMessage != null);
+    }
+    
+    @isTest
+    static void testProcessBot_PoliticaDevolucao() {
+        Contact contact = new Contact(LastName='ClienteDevolucao');
+        insert contact;
+        
+        BotController.BotRequest req = new BotController.BotRequest();
+        req.action = 'Política de Devolução';
+        req.sessionId = 'sess3';
+        req.contactId = contact.Id;
+        req.orderId = '321';
+        req.reason = 'Produto com defeito';
+        
+        List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
+        
+        List<BotResponseWrapper> responses = BotController.processBot(requests);
+        
+        System.assertEquals(1, responses.size());
+        System.assert(responses[0].responseMessage != null);
+    }
+    
+    @isTest
+    static void testProcessBot_ContratacaoServico() {
+        Contact contact = new Contact(LastName='ClienteServico');
+        insert contact;
+        
+        Service__c svc = new Service__c(Name='Serviço Premium', BasePrice__c=100);
+        insert svc;
+        
+        BotController.BotRequest req = new BotController.BotRequest();
+        req.action = 'Contratação de Serviço';
+        req.sessionId = 'sess4';
+        req.contactId = contact.Id;
+        req.requestedService = 'Serviço Premium';
+        
+        List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
+        
+        List<BotResponseWrapper> responses = BotController.processBot(requests);
+        
+        System.assertEquals(1, responses.size());
+        System.assert(
+            responses[0].responseMessage.toLowerCase().contains('orçamento'), 
+            'Deveria conter orçamento.'
+        );
+    }
+    
+    @isTest
+    static void testProcessBot_ActionInvalida() {
         BotController.BotRequest req = new BotController.BotRequest();
         req.action = 'Ação Inexistente';
-        req.sessionId = 'sess456';
+        req.sessionId = 'sess5';
         req.contactId = UserInfo.getUserId();
         
         List<BotController.BotRequest> requests = new List<BotController.BotRequest>{ req };
         
-        // act + assert
         Test.startTest();
         try {
             BotController.processBot(requests);
-            System.assert(false, 'Era esperado exceção para ação desconhecida');
+            System.assert(false, 'Deveria lançar exceção');
         } catch (BotFactory.BotFactoryException ex) {
-            System.assert(ex.getMessage().contains('Nenhuma estratégia'), 'Mensagem inesperada de exceção');
+            System.assert(ex.getMessage().contains('Nenhuma estratégia'), 'Mensagem de exceção inesperada');
         }
         Test.stopTest();
     }

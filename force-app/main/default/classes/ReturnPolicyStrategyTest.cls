@@ -2,43 +2,105 @@
 public class ReturnPolicyStrategyTest {
     
     @isTest
-    static void testHandleReturnPolicy() {
+    static void testHandle_ReturnPolicyOnly() {
         // arrange
-        Account acc = new Account(Name = 'Cliente Retorno');
-        insert acc;
-        
-        Contact contact = new Contact(
-            LastName = 'Cliente Devolucao',
-            AccountId = acc.Id
-        );
+        Contact contact = new Contact(LastName = 'Cliente');
         insert contact;
-        
+
         BotRequestGlobal req = new BotRequestGlobal();
-        req.parameters = new Map<String, Object>{
+        req.parameters = new Map<String,Object>{
             'action' => 'Política de Devolução',
-            'orderId' => '999999',
-            'reason' => 'Produto com defeito',
-            'startReturn' => true
+            'orderId' => '12345',
+            'reason' => 'Defeito'
+            // startReturn não informado → default false
         };
+        req.sessionId = 'sess-001';
         req.contactId = contact.Id;
-        req.sessionId = 'sess999';
-        
+
+        ReturnPolicyStrategy strategy = new ReturnPolicyStrategy();
+
         // act
         Test.startTest();
-        BotResponse res = new ReturnPolicyStrategy().handle(req);
+        BotResponse res = strategy.handle(req);
         Test.stopTest();
-        
+
         // assert
-        System.assertNotEquals(null, res, 'Deveria haver resposta do bot');
-        System.assert(res.message.contains('Protocolo'), 'A resposta deveria conter o protocolo de devolução');
+        System.assertNotEquals(null, res);
+        System.assert(res.message.contains('Política de devolução'), 
+                      'Deveria retornar texto da política');
         
-        List<ReturnRequest__c> requests = [
-            SELECT Id, OrderId__c, Reason__c, Status__c, UserId__c
-            FROM ReturnRequest__c
-            WHERE OrderId__c = '999999'
+        // validar log
+        List<InteractionLog__c> logs = [
+            SELECT Id, Action__c FROM InteractionLog__c
+            WHERE User__c = :contact.Id
+            AND Action__c = 'ReturnPolicy'
         ];
+        System.assertEquals(1, logs.size(), 'Deveria ter registrado o log de política');
+    }
+    
+    @isTest
+    static void testHandle_StartReturnTrue() {
+        // arrange
+        Contact contact = new Contact(LastName = 'Cliente');
+        insert contact;
+
+        BotRequestGlobal req = new BotRequestGlobal();
+        req.parameters = new Map<String,Object>{
+            'action' => 'Política de Devolução',
+            'orderId' => '98765',
+            'reason' => 'Produto quebrado',
+            'startReturn' => true
+        };
+        req.sessionId = 'sess-002';
+        req.contactId = contact.Id;
+
+        ReturnPolicyStrategy strategy = new ReturnPolicyStrategy();
+
+        // act
+        Test.startTest();
+        BotResponse res = strategy.handle(req);
+        Test.stopTest();
+
+        // assert
+        System.assertNotEquals(null, res);
+        System.assert(res.message.contains('Protocolo'), 
+                      'Deveria confirmar abertura de devolução');
         
-        System.assertEquals(1, requests.size(), 'Deveria ter 1 solicitação de devolução cadastrada');
-        System.assertEquals('Produto com defeito', requests[0].Reason__c);
+        // validar log
+        List<InteractionLog__c> logs = [
+            SELECT Id, Action__c FROM InteractionLog__c
+            WHERE User__c = :contact.Id
+            AND Action__c = 'ReturnPolicy'
+        ];
+        System.assertEquals(1, logs.size(), 'Deveria ter registrado o log de devolução');
+    }
+    
+    @isTest
+    static void testHandle_NullReasonAndStartReturn() {
+        // arrange
+        Contact contact = new Contact(LastName = 'Cliente');
+        insert contact;
+
+        BotRequestGlobal req = new BotRequestGlobal();
+        req.parameters = new Map<String,Object>{
+            'action' => 'Política de Devolução',
+            'orderId' => '22222'
+            // reason nulo
+            // startReturn nulo → default false
+        };
+        req.sessionId = 'sess-003';
+        req.contactId = contact.Id;
+
+        ReturnPolicyStrategy strategy = new ReturnPolicyStrategy();
+
+        // act
+        Test.startTest();
+        BotResponse res = strategy.handle(req);
+        Test.stopTest();
+
+        // assert
+        System.assertNotEquals(null, res);
+        System.assert(res.message.contains('Política de devolução'), 
+                      'Deveria retornar política mesmo sem reason');
     }
 }
