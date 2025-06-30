@@ -52,9 +52,10 @@ package "Salesforce Platform" {
   BotStrategy <|.. SupportStrategy
   BotStrategy <|.. ReturnPolicyStrategy
   BotStrategy <|.. ServiceContractStrategy
+  
   TrackingStrategy --> TrackingService : delegates
+  TrackingStrategy --> InteractionLog__c : logs
   TrackingService --> TrackingRepository : persists
-  TrackingRepository --> InteractionLog__c : inserts
 }
 
 @enduml

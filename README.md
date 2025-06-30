@@ -62,7 +62,7 @@ Custom object to store:
 
 ---
 
-## Scratch Org Sharing and Access
+## Setting Up Your Scratch Org
 
 ⚠️ **Important:** Salesforce Scratch Orgs are temporary, personal, and non-shareable environments. Each developer must create their *own* Scratch Org to work with this project. Scratch Orgs cannot be reused across users.
 
